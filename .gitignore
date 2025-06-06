@@ -80,3 +80,17 @@ docs/_build/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+# Production cleanup
+*.log
+debug_*.py
+setup_package.py
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docker
+.dockerignore

@@ -23,7 +23,7 @@ c:\dev\piw2_keyboard\tools\mcp_package\
 │   └── server.py            # Main MCP server implementation
 ├── pyproject.toml           # Modern Python package configuration
 ├── README.md                # Package documentation
-├── USAGE.md                 # Detailed usage instructions
+├── README.md                # Main documentation with installation and usage
 ├── LICENSE                  # MIT license
 ├── setup_package.py         # Distribution automation script
 ├── test_mcp_server.py       # Test suite

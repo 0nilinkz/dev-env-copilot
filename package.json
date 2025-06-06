@@ -6,10 +6,9 @@
   "bin": {
     "dev-env-copilot": "./bin/dev-env-copilot.js",
     "dev-env-copilot-server": "./bin/dev-env-copilot.js"
-  },
-  "scripts": {
+  },  "scripts": {
     "start": "node bin/dev-env-copilot.js",
-    "test": "node bin/dev-env-copilot.js --test",
+    "test": "node tests/test_wrapper.js",
     "install-python": "python3 -m pip install -e .",
     "postinstall": "echo \"Dev Environment Copilot MCP Server installed. Use 'npx dev-env-copilot' to run.\"",
     "docker:build": "docker build -t dev-env-copilot .",
@@ -45,10 +44,10 @@
     "darwin",
     "linux",
     "win32"
-  ],
-  "files": [
+  ],  "files": [
     "bin/",
     "src/",
+    "vscode-extension/",
     "README.md",
     "LICENSE",
     "pyproject.toml",
@@ -56,8 +55,9 @@
     "requirements.txt",
     "Dockerfile",
     "docker-compose.yml",
-    "INTEGRATION_GUIDE.md",
-    "USAGE.md"
+    "INSTALLATION.md",
+    "DOCKER_SETUP_GUIDE.md",
+    "DOCKER_VSCODE_INTEGRATION.md"
   ],
   "dependencies": {
     "cross-spawn": "^7.0.3"

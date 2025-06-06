@@ -34,7 +34,7 @@ tools/mcp_package/                    # Complete distributable package
 │   └── server.py                    # Main MCP server (800+ lines)
 ├── pyproject.toml                   # Modern Python packaging
 ├── README.md                        # Package documentation
-├── USAGE.md                         # Detailed usage guide
+├── README.md                        # Main documentation (installation + usage)
 ├── INTEGRATION_GUIDE.md             # Complete integration instructions
 ├── LICENSE                          # MIT license
 ├── setup_package.py                 # Automation script
