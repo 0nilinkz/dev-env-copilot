@@ -1,9 +1,8 @@
-{
-  "name": "dev-env-copilot-extension",
+{  "name": "dev-env-copilot-extension",
   "displayName": "Dev Environment Copilot",
   "description": "Intelligent environment detection and command syntax assistance for GitHub Copilot",
   "version": "1.0.0",
-  "publisher": "your-publisher-name",
+  "publisher": "chonksoft",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -49,15 +48,33 @@
           "type": "boolean",
           "default": false,
           "description": "Use Docker to run the MCP server (requires Docker)"
-        },
-        "devEnvCopilot.customConfigPath": {
+        },        "devEnvCopilot.customConfigPath": {
           "type": "string",
           "default": "",
           "description": "Path to custom configuration file"
+        },
+        "devEnvCopilot.globalContext.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable global context injection into all Copilot prompts"
+        },
+        "devEnvCopilot.globalContext.instructions": {
+          "type": "string",
+          "default": "",
+          "description": "Global instructions to inject into all Copilot prompts"
+        },
+        "devEnvCopilot.globalContext.includeEnvironment": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include environment information in global context"
+        },
+        "devEnvCopilot.globalContext.includeWorkspace": {
+          "type": "boolean",
+          "default": true,
+          "description": "Include workspace information in global context"
         }
       }
-    },
-    "commands": [
+    },    "commands": [
       {
         "command": "devEnvCopilot.detectEnvironment",
         "title": "Detect Environment",
@@ -72,10 +89,24 @@
         "command": "devEnvCopilot.restartServer",
         "title": "Restart MCP Server",
         "category": "Dev Env Copilot"
+      },
+      {
+        "command": "devEnvCopilot.toggleGlobalContext",
+        "title": "Toggle Global Context Injection",
+        "category": "Dev Env Copilot"
+      },
+      {
+        "command": "devEnvCopilot.updateGlobalInstructions",
+        "title": "Update Global Instructions",
+        "category": "Dev Env Copilot"
+      },
+      {
+        "command": "devEnvCopilot.showContextStatus",
+        "title": "Show Global Context Status",
+        "category": "Dev Env Copilot"
       }
     ],
-    "menus": {
-      "commandPalette": [
+    "menus": {      "commandPalette": [
         {
           "command": "devEnvCopilot.detectEnvironment",
           "when": "true"
@@ -87,9 +118,37 @@
         {
           "command": "devEnvCopilot.restartServer",
           "when": "true"
-        }
+        },
+        {
+          "command": "devEnvCopilot.toggleGlobalContext",
+          "when": "true"
+        },
+        {
+          "command": "devEnvCopilot.updateGlobalInstructions",
+          "when": "true"
+        },
+        {
+          "command": "devEnvCopilot.showContextStatus",
+          "when": "true"        }
       ]
-    }
+    },    "chatParticipants": [
+      {
+        "id": "devEnvCopilot.devenv",
+        "name": "devenv",
+        "description": "Write environment context to .vscode/copilot-instructions.md for automatic Copilot context",
+        "isSticky": false,
+        "commands": [
+          {
+            "name": "update",
+            "description": "Update environment context in copilot-instructions.md"
+          },
+          {
+            "name": "show",
+            "description": "Show current environment information"
+          }
+        ]
+      }
+    ]
   },  "scripts": {
     "vscode:prepublish": "npm run compile && npm run copy-assets",
     "compile": "tsc -p ./",

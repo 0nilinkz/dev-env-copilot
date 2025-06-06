@@ -6,6 +6,8 @@
   **A Model Context Protocol (MCP) server that provides intelligent environment detection and command syntax assistance for cross-platform development workflows.**
 </div>
 
+> **Mission:** This MCP server aims to ensure users have a seamless experience with their prompts by automatically providing rich, context-aware environment information to AI agents and tools.
+
 ---
 
 [![npm version](https://badge.fury.io/js/dev-env-copilot.svg)](https://badge.fury.io/js/dev-env-copilot)
@@ -17,9 +19,11 @@
 - 🔍 **Automatic Environment Detection** - Windows, Linux, macOS, and Raspberry Pi
 - 🐚 **Shell-Aware Commands** - PowerShell, Bash, Zsh syntax optimization  
 - 🤖 **GitHub Copilot Integration** - Seamless VS Code integration
-- 🌐 **Cross-Platform** - Works everywhere you develop
+- � **Global Context Injection** - Enhance all Copilot prompts with environment awareness
+- �🌐 **Cross-Platform** - Works everywhere you develop
 - 📦 **Multiple Installation Methods** - NPM, Pip, Docker
 - 🔧 **Extensible** - Easy to customize and extend
+- 🖥️ **Architecture-Aware** - Always detects and reports the current machine's architecture (e.g., x64, ARM, etc.) for every environment context
 
 ## 🚀 Quick Start
 
@@ -62,6 +66,41 @@ docker run -i dev-env-copilot
 ```
 
 ## 🔧 VS Code Integration
+
+### Extension-Based Setup (Recommended)
+
+The **Dev Environment Copilot Extension** provides the easiest setup experience:
+
+1. **Install the extension** from VS Code Marketplace
+2. **Enable Global Context Injection** - Automatically enhances all Copilot prompts with environment awareness
+3. **Configure custom instructions** - Add project-specific or team-wide guidelines that apply to all Copilot interactions
+
+#### Global Context Injection Features
+
+The extension includes advanced **Global Context Injection** that automatically adds environment information to your Copilot prompts:
+
+```
+# Your original prompt:
+"How do I install pandas?"
+
+# Enhanced prompt sent to Copilot:
+Environment Context:
+- OS: Windows 11
+- Shell: PowerShell 7.4.0  
+- Python: 3.11.7
+
+Global Instructions:
+Always consider cross-platform compatibility
+
+User Query: How do I install pandas?
+```
+
+**Usage:**
+- Use `@devEnvGlobalContext` in Copilot Chat for enhanced responses
+- Enable via Command Palette: `Dev Env Copilot: Toggle Global Context Injection`
+- Configure custom instructions: `Dev Env Copilot: Update Global Instructions`
+
+See [GLOBAL_CONTEXT_INJECTION.md](docs/GLOBAL_CONTEXT_INJECTION.md) for complete documentation.
 
 ### Method 1: GitHub Copilot Chat Integration
 Add to your VS Code settings (`.vscode/settings.json` or global settings):
