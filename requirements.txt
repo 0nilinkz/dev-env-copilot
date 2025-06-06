@@ -1,0 +1,5 @@
+mcp[cli]>=1.9.0
+httpx
+pydantic>=2.7.0
+typer
+rich

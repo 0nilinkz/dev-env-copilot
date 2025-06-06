@@ -1,0 +1,68 @@
+{
+  "name": "dev-env-copilot",
+  "version": "1.0.0",
+  "description": "MCP Server for intelligent environment detection and command syntax assistance",
+  "main": "bin/dev-env-copilot.js",
+  "bin": {
+    "dev-env-copilot": "./bin/dev-env-copilot.js",
+    "dev-env-copilot-server": "./bin/dev-env-copilot.js"
+  },
+  "scripts": {
+    "start": "node bin/dev-env-copilot.js",
+    "test": "node bin/dev-env-copilot.js --test",
+    "install-python": "python3 -m pip install -e .",
+    "postinstall": "echo \"Dev Environment Copilot MCP Server installed. Use 'npx dev-env-copilot' to run.\"",
+    "docker:build": "docker build -t dev-env-copilot .",
+    "docker:run": "docker run -i dev-env-copilot",
+    "docker:compose": "docker-compose up dev-env-copilot"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0nilinkz/dev-env-copilot.git"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "development",
+    "environment",
+    "copilot",
+    "vscode",
+    "shell",
+    "commands",
+    "cross-platform"
+  ],
+  "author": "Your Name <your.email@example.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/0nilinkz/dev-env-copilot/issues"
+  },
+  "homepage": "https://github.com/0nilinkz/dev-env-copilot#readme",
+  "engines": {
+    "node": ">=14.0.0",
+    "python": ">=3.8.0"
+  },
+  "os": [
+    "darwin",
+    "linux",
+    "win32"
+  ],
+  "files": [
+    "bin/",
+    "src/",
+    "README.md",
+    "LICENSE",
+    "pyproject.toml",
+    "setup.py",
+    "requirements.txt",
+    "Dockerfile",
+    "docker-compose.yml",
+    "INTEGRATION_GUIDE.md",
+    "USAGE.md"
+  ],
+  "dependencies": {
+    "cross-spawn": "^7.0.3"
+  },
+  "peerDependencies": {
+    "python": ">=3.8.0"
+  }
+}

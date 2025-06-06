@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  dev-env-copilot:
+    build: .
+    image: dev-env-copilot:latest
+    container_name: dev-env-copilot-server
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
+    environment:
+      - PYTHONUNBUFFERED=1
+      - PYTHONIOENCODING=utf-8
+    volumes:
+      # Optional: Mount config directory
+      - ./config:/home/mcp-user/.config:ro
+      # Optional: Mount workspace for development
+      - ./workspace:/workspace:ro
+    # No ports exposed - MCP uses stdio
+
+    # Logging configuration
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  # Alternative: Development container with shell access
+  dev-env-copilot-dev:
+    build: .
+    image: dev-env-copilot:latest
+    container_name: dev-env-copilot-dev
+    stdin_open: true
+    tty: true
+    command: /bin/bash
+    volumes:
+      - .:/app
+      - ./workspace:/workspace
+    working_dir: /app
+    profiles: [ "dev" ]
+
+# Usage:
+# Production: docker-compose up dev-env-copilot
+# Development: docker-compose --profile dev up dev-env-copilot-dev
+# Build: docker-compose build
+# Shell access: docker-compose exec dev-env-copilot bash

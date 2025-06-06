@@ -3,7 +3,7 @@ requires = ["setuptools>=61.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "dev-environment-mcp"
+name = "dev-env-copilot"
 version = "1.0.0"
 description = "MCP server for development environment detection and command syntax assistance"
 readme = "README.md"
@@ -26,24 +26,31 @@ classifiers = [
     "Topic :: System :: System Shells",
 ]
 dependencies = [
+    "mcp[cli]>=1.9.0",
+    "httpx",
+    "pydantic>=2.7.0",
+    "typer",
+    "rich",
     "psutil>=5.9.0",
-    "pydantic>=2.0.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0.0",
+    "pytest-asyncio",
     "black>=23.0.0",
     "ruff>=0.1.0",
+    "mypy",
 ]
 
-[project.urls]
-Homepage = "https://github.com/yourusername/dev-environment-mcp"
-Repository = "https://github.com/yourusername/dev-environment-mcp"
-Issues = "https://github.com/yourusername/dev-environment-mcp/issues"
-
 [project.scripts]
-dev-env-mcp = "dev_environment_mcp.server:main"
+dev-env-copilot = "dev_environment_mcp.mcp_server:main"
+dev-env-copilot-server = "dev_environment_mcp.mcp_server:main"
+
+[project.urls]
+Homepage = "https://github.com/0nilinkz/dev-env-copilot"
+Repository = "https://github.com/0nilinkz/dev-env-copilot"
+Issues = "https://github.com/0nilinkz/dev-env-copilot/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]

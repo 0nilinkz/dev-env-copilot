@@ -1,0 +1,41 @@
+{
+  "github.copilot.chat.experimental.mcp": {
+    "enabled": true,
+    "servers": {
+      "dev-env-copilot-docker": {
+        "command": "docker",
+        "args": [
+          "run",
+          "--rm",
+          "--interactive",
+          "--volume",
+          "${workspaceFolder}:/workspace:ro",
+          "dev-env-copilot-test:latest"
+        ],
+        "env": {
+          "DOCKER_BUILDKIT": "1"
+        },
+        "initializationOptions": {
+          "workspaceFolder": "/workspace"
+        }
+      }
+    }
+  },
+  "github.copilot.chat.experimental.tools": [
+    {
+      "name": "detect_environment",
+      "description": "Detect current OS and development environment for correct terminal commands",
+      "server": "dev-env-copilot-docker"
+    },
+    {
+      "name": "get_command_syntax",
+      "description": "Get correct terminal command syntax for current environment",
+      "server": "dev-env-copilot-docker"
+    },
+    {
+      "name": "format_command",
+      "description": "Format a command for the detected environment",
+      "server": "dev-env-copilot-docker"
+    }
+  ]
+}
