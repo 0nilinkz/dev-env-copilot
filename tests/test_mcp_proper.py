@@ -14,10 +14,10 @@ def test_mcp_server():
     """Test the MCP server with proper initialization handshake"""
     print("🔍 Testing MCP server functionality...")
     
-    try:
-        # Start the MCP server
+    try:        # Start the MCP server
+        server_path = Path(__file__).parent.parent / "src" / "dev_environment_mcp" / "server.py"
         proc = subprocess.Popen(
-            [sys.executable, "-m", "dev_environment_mcp.mcp_server"],
+            [sys.executable, str(server_path)],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -108,18 +108,45 @@ def test_mcp_server():
                 proc.stdin.write(json.dumps(tool_call_request) + "\n")
                 proc.stdin.flush()
                 
-                # Read tool response
-                tool_response = proc.stdout.readline()
-                if tool_response:
+                # Read tool response with timeout
+                import select
+                import time
+                
+                # Wait for response with timeout
+                ready = False
+                timeout = 5  # 5 seconds
+                start_time = time.time()
+                
+                while time.time() - start_time < timeout:
+                    if proc.poll() is not None:
+                        print("❌ Process terminated unexpectedly")
+                        break
+                    
                     try:
-                        tool_data = json.loads(tool_response)
+                        tool_response = proc.stdout.readline()
+                        if tool_response.strip():
+                            ready = True
+                            break
+                    except:
+                        pass
+                    time.sleep(0.1)
+                
+                if ready and tool_response:
+                    try:
+                        tool_data = json.loads(tool_response.strip())
                         if 'result' in tool_data:
                             print("✅ Tool call successful")
+                            content = tool_data.get('result', {}).get('content', [])
+                            if content:
+                                print(f"📄 Tool response preview: {content[0].get('text', '')[:200]}...")
+                            proc.terminate()
                             return True
                         else:
                             print(f"❌ Tool call failed: {tool_data}")
                     except json.JSONDecodeError:
                         print(f"❌ Invalid tool response: {tool_response}")
+                else:
+                    print("❌ Tool call timed out or no response")
                 
         except json.JSONDecodeError:
             print(f"❌ Invalid JSON in tools response: {tools_response}")

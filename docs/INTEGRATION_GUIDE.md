@@ -17,18 +17,18 @@ The MCP server is **working and tested**:
 ## 📦 Package Structure
 
 ```
-c:\dev\piw2_keyboard\tools\mcp_package\
+c:\dev\dev-env-copilot\
 ├── src\dev_environment_mcp\
 │   ├── __init__.py          # Package initialization
 │   └── server.py            # Main MCP server implementation
+├── bin\
+│   └── dev-env-copilot.js   # Node.js wrapper
+├── tests\                   # Test suite
 ├── pyproject.toml           # Modern Python package configuration
-├── README.md                # Package documentation
 ├── README.md                # Main documentation with installation and usage
+├── INSTALLATION.md          # Detailed installation guide
 ├── LICENSE                  # MIT license
-├── setup_package.py         # Distribution automation script
-├── test_mcp_server.py       # Test suite
-└── .github\workflows\       # CI/CD automation
-    └── test-and-build.yml
+└── vscode-mcp-config.json   # MCP configuration template
 ```
 
 ## 🚀 Distribution Options
@@ -43,7 +43,11 @@ mkdir c:\dev\dev-environment-mcp
 cd c:\dev\dev-environment-mcp
 
 # Copy package files
-xcopy /E /I c:\dev\piw2_keyboard\tools\mcp_package\* .
+xcopy /E /I c:\dev\dev-env-copilot\src\dev_environment_mcp\ src\dev_environment_mcp\
+xcopy /E /I c:\dev\dev-env-copilot\bin\ bin\
+copy c:\dev\dev-env-copilot\pyproject.toml .
+copy c:\dev\dev-env-copilot\README.md .
+copy c:\dev\dev-env-copilot\LICENSE .
 
 # Initialize git repository
 git init
@@ -65,7 +69,7 @@ Publish to PyPI for easy installation:
 pip install build twine
 
 # Build package
-cd c:\dev\piw2_keyboard\tools\mcp_package
+cd c:\dev\dev-env-copilot
 python -m build
 
 # Upload to PyPI (requires API token)
@@ -78,7 +82,7 @@ Copy the MCP server into any project that needs it:
 
 ```powershell
 # Copy to another project
-xcopy /E /I c:\dev\piw2_keyboard\tools\mcp_package\src\dev_environment_mcp\ c:\other-project\tools\dev_environment_mcp\
+xcopy /E /I c:\dev\dev-env-copilot\src\dev_environment_mcp\ c:\other-project\tools\dev_environment_mcp\
 ```
 
 ## 🔧 VS Code Integration Methods
@@ -209,36 +213,21 @@ cd /home/marty/project && sudo python3 -m pytest test/
 - **Project Type**: Python, Node.js, multi-language projects
 - **Dependencies**: Analyzes requirements.txt, package.json, pyproject.toml
 
-## 🔄 Automation Script
-
-Use the included automation script:
-
-```powershell
-cd c:\dev\piw2_keyboard\tools\mcp_package
-
-# Setup development environment
-python setup_package.py setup
-
-# Run all tests and checks
-python setup_package.py all
-
-# Build and publish
-python setup_package.py build
-python setup_package.py publish
-```
-
 ## 🎉 Next Steps
 
 1. **Create GitHub Repository**:
    ```powershell
-   python setup_package.py github
+   # Use the current repository or create a new one
+   git remote add origin https://github.com/yourusername/dev-env-copilot.git
+   git push -u origin main
    ```
 
 2. **Publish to PyPI**:
    ```powershell
-   # Set API token first
+   # Set API token first and build package
    $env:TWINE_PASSWORD = "your-pypi-token"
-   python setup_package.py publish
+   python -m build
+   twine upload dist/*
    ```
 
 3. **Integrate with Your Projects**:
@@ -247,9 +236,9 @@ python setup_package.py publish
    - Update Copilot instructions
 
 4. **Share with Community**:
-   - Submit to VS Code Extension Marketplace
    - Add to MCP server registry
    - Share on developer forums
+   - Create documentation and examples
 
 ## 🛠️ Customization
 

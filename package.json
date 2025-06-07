@@ -47,7 +47,6 @@
   ],  "files": [
     "bin/",
     "src/",
-    "vscode-extension/",
     "README.md",
     "LICENSE",
     "pyproject.toml",

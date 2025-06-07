@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "dev-env-copilot": {
+      "command": "node",
+      "args": ["c:\\dev\\dev-env-copilot\\bin\\dev-env-copilot.js"],
+      "env": {
+        "PYTHONPATH": "c:\\dev\\dev-env-copilot\\src"
+      }
+    }
+  }
+}

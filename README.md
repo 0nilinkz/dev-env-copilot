@@ -27,12 +27,10 @@
 
 ## 🚀 Quick Start
 
-### VS Code Extension (Recommended)
+### VS Code Extension (Local Installation)
 ```bash
-# Install from VS Code Marketplace
-# Search for "Dev Environment Copilot" in Extensions
-# Or install via command:
-code --install-extension your-publisher.dev-env-copilot-extension
+# Install the local extension package
+code --install-extension vscode-extension/dev-env-copilot-extension-1.0.0.vsix
 ```
 
 ### NPM
@@ -53,16 +51,16 @@ pip install dev-env-copilot
 python -m dev_environment_mcp.mcp_server
 ```
 
-### Docker
+### Docker (Easiest)
 ```bash
-# Run from Docker Hub
-docker run -i dev-env-copilot
+# Run from Docker Hub (no installation needed)
+docker run -i devenvcopilot/dev-env-copilot
 
-# Or build locally
-git clone https://github.com/0nilinkz/dev-env-copilot.git
-cd dev-env-copilot
-docker build -t dev-env-copilot .
-docker run -i dev-env-copilot
+# Or from GitHub Container Registry
+docker run -i ghcr.io/yourusername/dev-env-copilot
+
+# Test with a simple MCP request
+echo '{"jsonrpc": "2.0", "method": "tools/list", "id": 1}' | docker run -i devenvcopilot/dev-env-copilot
 ```
 
 ## 🔧 VS Code Integration
@@ -71,7 +69,7 @@ docker run -i dev-env-copilot
 
 The **Dev Environment Copilot Extension** provides the easiest setup experience:
 
-1. **Install the extension** from VS Code Marketplace
+1. **Install the extension** using the local .vsix file
 2. **Enable Global Context Injection** - Automatically enhances all Copilot prompts with environment awareness
 3. **Configure custom instructions** - Add project-specific or team-wide guidelines that apply to all Copilot interactions
 
