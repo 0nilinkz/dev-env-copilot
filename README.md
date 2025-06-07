@@ -1,39 +1,35 @@
 <div align="center">
-  <img src="vscode-extension/icon.png" alt="Development Environment Copilot" width="200" height="200">
+  <img src="images/dev-env-copilot-mcp-logo.png" alt="Development Environment Copilot" width="200" height="200">
   
   # Dev Environment Copilot
   
-  **A Model Context Protocol (MCP) server that provides intelligent environment detection and command syntax assistance for cross-platform development workflows.**
+  **A production-ready Model Context Protocol (MCP) server that provides intelligent environment detection and command syntax assistance for cross-platform development workflows.**
 </div>
 
-> **Mission:** This MCP server aims to ensure users have a seamless experience with their prompts by automatically providing rich, context-aware environment information to AI agents and tools.
+> **Mission:** This MCP server ensures users have a seamless experience with their prompts by automatically providing rich, context-aware environment information to AI agents and tools.
 
 ---
 
 [![npm version](https://badge.fury.io/js/dev-env-copilot.svg)](https://badge.fury.io/js/dev-env-copilot)
-[![Python version](https://img.shields.io/pypi/v/dev-env-copilot.svg)](https://pypi.org/project/dev-env-copilot/)
+[![PyPI version](https://img.shields.io/pypi/v/dev-env-copilot.svg)](https://pypi.org/project/dev-env-copilot/)
+[![Docker Hub](https://img.shields.io/docker/v/0nilinkz/dev-env-copilot?label=docker)](https://hub.docker.com/r/0nilinkz/dev-env-copilot)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Tests](https://github.com/yourusername/dev-env-copilot/workflows/Test%20and%20Build/badge.svg)](https://github.com/yourusername/dev-env-copilot/actions)
 
 ## ✨ Features
 
-- 🔍 **Automatic Environment Detection** - Windows, Linux, macOS, and Raspberry Pi
+- 🔍 **Automatic Environment Detection** - Windows, Linux, and macOS
 - 🐚 **Shell-Aware Commands** - PowerShell, Bash, Zsh syntax optimization  
-- 🤖 **GitHub Copilot Integration** - Seamless VS Code integration
-- � **Global Context Injection** - Enhance all Copilot prompts with environment awareness
-- �🌐 **Cross-Platform** - Works everywhere you develop
-- 📦 **Multiple Installation Methods** - NPM, Pip, Docker
+- 🤖 **VS Code Insiders MCP Integration** - Seamless integration with GitHub Copilot
+- 🌐 **Cross-Platform** - Works everywhere you develop
+- 📦 **Multiple Installation Methods** - NPM, PyPI, Docker Hub
 - 🔧 **Extensible** - Easy to customize and extend
-- 🖥️ **Architecture-Aware** - Always detects and reports the current machine's architecture (e.g., x64, ARM, etc.) for every environment context
+- 🖥️ **Architecture-Aware** - Always detects and reports system architecture
+- 🚀 **Production Ready** - Comprehensive test coverage and automated CI/CD
 
 ## 🚀 Quick Start
 
-### VS Code Extension (Local Installation)
-```bash
-# Install the local extension package
-code --install-extension vscode-extension/dev-env-copilot-extension-1.0.0.vsix
-```
-
-### NPM
+### NPM (Recommended)
 ```bash
 # Install globally
 npm install -g dev-env-copilot
@@ -42,207 +38,78 @@ npm install -g dev-env-copilot
 npx dev-env-copilot
 ```
 
-### Python/Pip
+### Python/PyPI
 ```bash
 # Install from PyPI
 pip install dev-env-copilot
 
 # Run the server
-python -m dev_environment_mcp.mcp_server
+python -m dev_environment_mcp.server
 ```
 
 ### Docker (Easiest)
 ```bash
 # Run from Docker Hub (no installation needed)
-docker run -i devenvcopilot/dev-env-copilot
+docker run -i 0nilinkz/dev-env-copilot
 
 # Or from GitHub Container Registry
 docker run -i ghcr.io/yourusername/dev-env-copilot
 
 # Test with a simple MCP request
-echo '{"jsonrpc": "2.0", "method": "tools/list", "id": 1}' | docker run -i devenvcopilot/dev-env-copilot
+echo '{"jsonrpc": "2.0", "method": "tools/list", "id": 1}' | docker run -i 0nilinkz/dev-env-copilot
 ```
 
-## 🔧 VS Code Integration
+## 🔧 VS Code Insiders Integration
 
-### Extension-Based Setup (Recommended)
+### MCP Server Setup (Recommended)
 
-The **Dev Environment Copilot Extension** provides the easiest setup experience:
+Add to your **VS Code Insiders** MCP configuration file:
 
-1. **Install the extension** using the local .vsix file
-2. **Enable Global Context Injection** - Automatically enhances all Copilot prompts with environment awareness
-3. **Configure custom instructions** - Add project-specific or team-wide guidelines that apply to all Copilot interactions
-
-#### Global Context Injection Features
-
-The extension includes advanced **Global Context Injection** that automatically adds environment information to your Copilot prompts:
-
-```
-# Your original prompt:
-"How do I install pandas?"
-
-# Enhanced prompt sent to Copilot:
-Environment Context:
-- OS: Windows 11
-- Shell: PowerShell 7.4.0  
-- Python: 3.11.7
-
-Global Instructions:
-Always consider cross-platform compatibility
-
-User Query: How do I install pandas?
-```
-
-**Usage:**
-- Use `@devEnvGlobalContext` in Copilot Chat for enhanced responses
-- Enable via Command Palette: `Dev Env Copilot: Toggle Global Context Injection`
-- Configure custom instructions: `Dev Env Copilot: Update Global Instructions`
-
-See [GLOBAL_CONTEXT_INJECTION.md](docs/GLOBAL_CONTEXT_INJECTION.md) for complete documentation.
-
-### Method 1: GitHub Copilot Chat Integration
-Add to your VS Code settings (`.vscode/settings.json` or global settings):
+**Windows**: `%APPDATA%\Code - Insiders\User\globalStorage\rooveterinaryinc.roo-cline\settings\cline_mcp_settings.json`
+**macOS**: `~/Library/Application Support/Code - Insiders/User/globalStorage/rooveterinaryinc.roo-cline/settings/cline_mcp_settings.json`
+**Linux**: `~/.config/Code - Insiders/User/globalStorage/rooveterinaryinc.roo-cline/settings/cline_mcp_settings.json`
 
 ```json
 {
-  "github.copilot.chat.experimental.mcp": {
-    "enabled": true,
-    "servers": {
-      "dev-env-copilot": {
-        "command": "npx",
-        "args": ["dev-env-copilot"]
-      }
-    }
-  }
-}
-```
-
-### Method 2: Docker Integration
-```json
-{
-  "github.copilot.chat.experimental.mcp": {
-    "enabled": true,
-    "servers": {
-      "dev-env-copilot": {
-        "command": "docker",
-        "args": [
-          "run", "--rm", "--interactive",
-          "dev-env-copilot"
-        ]
-      }
-    }
-  }
-}
-```
-
-### Method 3: Task Integration
-Add to `.vscode/tasks.json`:
-
-```json
-{
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "detect-environment",
-      "type": "shell",
-      "command": "npx",
-      "args": ["dev-env-copilot", "detect-environment"],
-      "group": "build"
-    }
-  ]
-}
-```
-
-```json
-{
-  "github.copilot.chat.experimental.mcp": {
-    "enabled": true,
-    "servers": {
-      "dev-env-copilot-docker": {
-        "command": "docker",
-        "args": [
-          "run", "--rm", "--interactive",
-          "--volume", "${workspaceFolder}:/workspace:ro",
-          "dev-env-copilot-test:latest"
-        ]
-      }
-    }
-  }
-}
-```
-
-See [VSCODE_INTEGRATION_SUMMARY.md](VSCODE_INTEGRATION_SUMMARY.md) for complete VS Code setup instructions.
-
-## 📖 Full Installation Guide
-
-See [INSTALLATION.md](INSTALLATION.md) for detailed installation instructions, configuration examples, and troubleshooting.
-
-## ✅ Installation Verification Status
-
-All installation methods have been tested and verified:
-
-| Method | Status | Environment | Notes |
-|--------|--------|-------------|-------|
-| **Python/pip** | ✅ **VERIFIED** | Native | Recommended for most users |
-| **NPM/Node.js** | ✅ **VERIFIED** | Cross-platform | Node.js wrapper tested |
-| **Docker** | ✅ **VERIFIED** | Container/Linux | Full container isolation |
-| **MCP Protocol** | ✅ **VERIFIED** | All platforms | MCP 2024-11-05 compliant |
-
-*Last verified: June 6, 2025 - All tests passing (4/4)*
-
-## VS Code Integration
-
-### Method 1: Direct MCP Integration
-
-Add to `.vscode/settings.json`:
-
-```json
-{
-  "mcp.servers": {
+  "mcpServers": {
     "dev-environment": {
-      "command": "dev-env-mcp",
-      "args": ["--mcp-mode"],
-      "transport": "stdio"
+      "command": "npx",
+      "args": ["dev-env-copilot"]
     }
   }
 }
 ```
 
-### Method 2: Task Integration
+See [VSCODE_INSIDERS_MCP_SETUP.md](VSCODE_INSIDERS_MCP_SETUP.md) for complete setup instructions.
 
-Add to `.vscode/tasks.json`:
+### Alternative Integration Methods
 
+#### Method 1: Docker Integration
 ```json
 {
-  "version": "2.0.0",
-  "tasks": [
-    {
-      "label": "detect-environment",
-      "type": "shell",
-      "command": "dev-env-mcp",
-      "args": ["detect-environment", "--format", "copilot"],
-      "group": "build"
+  "mcpServers": {
+    "dev-env-copilot-docker": {
+      "command": "docker",
+      "args": [
+        "run", "--rm", "--interactive",
+        "0nilinkz/dev-env-copilot"
+      ]
     }
-  ]
+  }
 }
 ```
 
-### Method 3: Extension Integration
-
-Install the companion VS Code extension:
-
-1. Open VS Code Extensions (`Ctrl+Shift+X`)
-2. Search for "Development Environment MCP"
-3. Install and reload VS Code
-
-## Copilot Integration
-
-The server provides context-aware assistance for:
-
-- **Terminal Commands**: Automatically formats commands for your OS/shell
-- **Environment Variables**: Correct syntax for setting env vars
-- **File Operations**: Platform-appropriate file manipulation commands
-- **Development Workflows**: Context-aware suggestions for common dev tasks
+#### Method 2: Python Installation
+```json
+{
+  "mcpServers": {
+    "dev-env-copilot-python": {
+      "command": "python",
+      "args": ["-m", "dev_environment_mcp.server"]
+    }
+  }
+}
+```
 
 ### Example Usage with Copilot
 
@@ -257,6 +124,26 @@ User: "Set environment variable"
 Copilot: (Windows) "$env:PYTHONPATH = 'c:\dev\project'"
 Copilot: (Linux) "export PYTHONPATH=/home/user/project"
 ```
+
+## 📊 Production Ready
+
+### Automated CI/CD Pipeline
+- ✅ **Multi-platform testing** - Ubuntu, Windows, macOS
+- ✅ **Multi-version support** - Python 3.8-3.12
+- ✅ **Automated publishing** - NPM, PyPI, Docker Hub
+- ✅ **Stage-based deployment** - Tests must pass before deployment
+- ✅ **Independent deployments** - Each registry deploys separately
+
+### Comprehensive Test Coverage
+```bash
+# All installation methods verified
+✅ Python/PyPI     - Native execution
+✅ NPM/Node.js     - Cross-platform wrapper
+✅ Docker          - Multi-architecture builds
+✅ MCP Protocol    - Full protocol compliance
+```
+
+See [DEPLOYMENT_SETUP.md](DEPLOYMENT_SETUP.md) for deployment architecture details.
 
 ## Available Tools
 
@@ -441,60 +328,105 @@ Returns comprehensive environment information.
 
 #### "Command not found" errors
 ```bash
-# Ensure installation
+# Check NPM installation
 npm list -g dev-env-copilot
 
-# Or reinstall
+# Reinstall if needed
 npm install -g dev-env-copilot
+
+# Check Python installation
+pip show dev-env-copilot
 ```
 
-#### VS Code Integration not working
-1. Check VS Code settings for MCP configuration
-2. Restart VS Code after configuration changes
+#### VS Code Insiders MCP integration not working
+1. Verify MCP configuration file location and format
+2. Restart VS Code Insiders after configuration changes
 3. Check VS Code Developer Console for errors (`Help > Toggle Developer Tools`)
+4. Ensure you're using VS Code Insiders (not regular VS Code)
 
 #### Docker permission issues
 ```bash
 # Linux/macOS - add user to docker group
 sudo usermod -aG docker $USER
+newgrp docker
 
 # Windows - ensure Docker Desktop is running
+```
+
+#### MCP Protocol Issues
+```bash
+# Test MCP server directly
+echo '{"jsonrpc": "2.0", "method": "tools/list", "id": 1}' | npx dev-env-copilot
+
+# Test Python server
+echo '{"jsonrpc": "2.0", "method": "tools/list", "id": 1}' | python -m dev_environment_mcp.server
 ```
 
 ### Debug Mode
 Enable detailed logging:
 
 ```bash
-# Environment variable
+# Set environment variable
 export DEV_ENV_MCP_LOG_LEVEL=DEBUG
 
-# Or via config file
-{
-  "logging": {
-    "level": "DEBUG",
-    "file": "~/.local/logs/dev-env-mcp.log"
-  }
-}
+# Or create config file with debug logging
+echo '{"logging": {"level": "DEBUG"}}' > ~/.config/dev-env-mcp/config.json
 ```
 
 ## 📚 Additional Documentation
 
-- [Installation Guide](INSTALLATION.md) - Detailed setup instructions
-- [Docker Setup](DOCKER_SETUP_GUIDE.md) - Container deployment
-- [VS Code Integration](DOCKER_VSCODE_INTEGRATION.md) - Advanced IDE setup
-- [Configuration Examples](examples/) - Sample configurations
+- [VS Code Insiders MCP Setup](VSCODE_INSIDERS_MCP_SETUP.md) - Complete integration guide
+- [Deployment Setup](DEPLOYMENT_SETUP.md) - CI/CD pipeline and workflow architecture
+- [Docker Setup](DOCKER_SETUP_GUIDE.md) - Container deployment guide
+- [Docker VS Code Integration](DOCKER_VSCODE_INTEGRATION.md) - Advanced containerized setup
+- [Integration Guide](docs/INTEGRATION_GUIDE.md) - Technical integration details
+- [Distribution Summary](docs/DISTRIBUTION_SUMMARY.md) - Deployment and publishing overview
 
-## 🤝 Contributing
+## 🏗️ Development & Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
-
-### Development Setup
+### Quick Development Setup
 ```bash
-git clone https://github.com/0nilinkz/dev-env-copilot.git
+git clone https://github.com/yourusername/dev-env-copilot.git
 cd dev-env-copilot
+
+# Install dependencies
 npm install
-npm run test
+pip install -e .
+
+# Run tests
+python tests/test_mcp_proper.py
+node bin/dev-env-copilot.js < echo '{"jsonrpc":"2.0","method":"initialize","id":1,"params":{}}'
 ```
+
+### Workflow Structure
+Our CI/CD uses GitHub Actions with a modern **stage-based architecture**:
+
+```
+Test Stage (test-and-build.yml)
+├── Multi-platform testing (Ubuntu, Windows, macOS)
+├── Multi-version testing (Python 3.8-3.12)
+└── MCP protocol compliance verification
+
+Deploy Stage (on release)
+├── deploy-pypi.yml    → PyPI publishing
+├── deploy-npm.yml     → npm registry  
+└── docker-deploy.yml  → Docker Hub + GHCR
+```
+
+**Key Features:**
+- 🔒 **Reliable**: No deployment without passing tests
+- 🔧 **Modular**: Each deployment type is independent  
+- ⚡ **Efficient**: Reusable workflows, no duplication
+- 🎯 **Flexible**: Deploy to specific registries independently
+
+### Contributing
+We welcome contributions! The project is well-structured with:
+- ✅ Comprehensive test coverage
+- ✅ Automated quality checks
+- ✅ Clear documentation
+- ✅ Modern development workflow
+
+Please open an issue or pull request to get started.
 
 ## 📄 License
 

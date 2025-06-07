@@ -5,7 +5,7 @@
 A **complete, production-ready MCP (Model Context Protocol) server** that provides intelligent development environment assistance:
 
 ### 🎯 Core Functionality
-- **Environment Detection**: Automatically detects OS, shell, hardware (including Raspberry Pi)
+- **Environment Detection**: Automatically detects OS, shell, hardware, and containers
 - **Command Syntax Translation**: Provides correct terminal commands for PowerShell, Bash, Zsh
 - **VS Code Integration**: Works with GitHub Copilot for context-aware suggestions
 - **Project Analysis**: Detects project types (Python, Node.js, etc.) and dependencies
@@ -54,9 +54,6 @@ cd c:\dev\project; python -m pytest test/
 
 # Linux/macOS Bash  
 cd /home/user/project && python3 -m pytest test/
-
-# Raspberry Pi
-cd /home/marty/project && sudo python3 -m pytest test/
 ```
 
 ### 2. **Copilot Integration**

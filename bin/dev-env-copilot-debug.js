@@ -33,7 +33,7 @@ function getPythonCommand() {
 function findPythonPackage() {
     // First, try to find the installed package
     const packageDir = path.dirname(__dirname);
-    const srcPath = path.join(packageDir, 'src', 'dev_environment_mcp', 'mcp_server.py');
+    const srcPath = path.join(packageDir, 'src', 'dev_environment_mcp', 'server.py');
 
     debug(`Looking for package at: ${srcPath}`);
 

@@ -200,15 +200,9 @@ cd /home/user/project && python3 -m pytest test/
 export PYTHONPATH=/home/user/project
 ```
 
-**Raspberry Pi:**
-```bash
-# Environment detection outputs:
-cd /home/marty/project && sudo python3 -m pytest test/
-```
-
 ### Intelligent Context Detection
 
-- **Hardware**: Detects Raspberry Pi, containers
+- **Hardware**: Detects containers and Docker environments
 - **Shell**: PowerShell, Bash, Zsh support
 - **Project Type**: Python, Node.js, multi-language projects
 - **Dependencies**: Analyzes requirements.txt, package.json, pyproject.toml

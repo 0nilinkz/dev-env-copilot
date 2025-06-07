@@ -57,7 +57,6 @@ The workflow automatically triggers on:
 The deployment builds for multiple architectures:
 - `linux/amd64` (x86_64)
 - `linux/arm64` (ARM 64-bit, Apple Silicon, AWS Graviton)
-- `linux/arm/v7` (ARM 32-bit, Raspberry Pi)
 
 ## 🔒 Security Features
 
