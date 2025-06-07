@@ -25,10 +25,10 @@ def test_docker_mcp_integration():
             print("✅ Docker image 'dev-env-copilot-test' found")
         else:
             print("❌ Docker image not found")
-            return False
+        assert "dev-env-copilot-test" in result.stdout, "Docker image not found"
     except subprocess.CalledProcessError as e:
         print(f"❌ Docker command failed: {e}")
-        return False
+        assert False, f"Docker command failed: {e}"
     
     # Test 2: Test MCP protocol handshake
     print("\n2. Testing MCP protocol handshake...")
@@ -67,26 +67,32 @@ def test_docker_mcp_integration():
             print(f"❌ MCP handshake failed")
             print(f"   Stdout: {stdout}")
             print(f"   Stderr: {stderr}")
-            return False
+        assert '"result"' in stdout and '"protocolVersion"' in stdout, f"MCP handshake failed. Stdout: {stdout}, Stderr: {stderr}"
             
     except subprocess.TimeoutExpired:
         print("❌ MCP handshake timed out")
         process.kill()
-        return False
+        assert False, "MCP handshake timed out"
     except Exception as e:
         print(f"❌ MCP handshake error: {e}")
-        return False
-    
-    # Test 3: Test tools list
+        assert False, f"MCP handshake error: {e}"
+      # Test 3: Test tools list
     print("\n3. Testing tools list...")
     try:
+        # Initialize notification (required after initialize)
+        initialized_notification = {
+            "jsonrpc": "2.0",
+            "method": "notifications/initialized"
+        }
+        
         list_tools_msg = {
             "jsonrpc": "2.0",
             "id": 2,
             "method": "tools/list",
             "params": {}
         }
-          # Get current directory (Windows-compatible)
+        
+        # Get current directory (Windows-compatible)
         import os
         current_dir = os.getcwd().replace('\\', '/')
         
@@ -100,9 +106,10 @@ def test_docker_mcp_integration():
             text=True
         )
         
-        # Send both initialize and tools/list
+        # Send initialize, initialized notification, then tools/list
         messages = [
             json.dumps(init_msg),
+            json.dumps(initialized_notification),
             json.dumps(list_tools_msg)
         ]
         
@@ -110,6 +117,7 @@ def test_docker_mcp_integration():
         
         if 'detect_environment' in stdout and 'get_command_syntax' in stdout:
             print("✅ Tools list successful")
+            
             # Extract tools from response
             lines = stdout.strip().split('\n')
             for line in lines:
@@ -124,11 +132,11 @@ def test_docker_mcp_integration():
         else:
             print(f"❌ Tools list failed")
             print(f"   Stdout: {stdout}")
-            return False
+        assert 'detect_environment' in stdout, f"Tools list failed. Stdout: {stdout}"
             
     except Exception as e:
         print(f"❌ Tools list error: {e}")
-        return False
+        assert False, f"Tools list error: {e}"
     
     print("\n🎉 All Docker MCP integration tests passed!")
     print("\n📋 VS Code Configuration:")
@@ -156,8 +164,6 @@ def test_docker_mcp_integration():
     }
     
     print(json.dumps(config, indent=2))
-    return True
 
 if __name__ == "__main__":
-    success = test_docker_mcp_integration()
-    sys.exit(0 if success else 1)
+    test_docker_mcp_integration()

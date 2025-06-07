@@ -35,13 +35,14 @@ def test_python_installation():
     code, stdout, stderr = run_command([sys.executable, "-c", "import dev_environment_mcp; print('OK')"])
     if code != 0:
         print(f"❌ Python import failed: {stderr}")
-        return False
+    assert code == 0, f"Python import failed: {stderr}"
     
     print("✅ Python package import successful")
-      # Test MCP server with proper handshake
+    
+    # Test MCP server with proper handshake
     try:
         proc = subprocess.Popen(
-            [sys.executable, "-m", "dev_environment_mcp.mcp_server"],
+            [sys.executable, "-m", "dev_environment_mcp"],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -68,7 +69,7 @@ def test_python_installation():
         if not response or "result" not in json.loads(response):
             proc.terminate()
             print("❌ Python MCP server initialization failed")
-            return False
+        assert response and "result" in json.loads(response), "Python MCP server initialization failed"
         
         # Send initialized notification
         proc.stdin.write('{"jsonrpc": "2.0", "method": "notifications/initialized"}\n')
@@ -83,14 +84,13 @@ def test_python_installation():
         
         if tools_response and "tools" in tools_response:
             print("✅ Python MCP server working")
-            return True
         else:
             print("❌ Python MCP server tools/list failed")
-            return False
+        assert tools_response and "tools" in tools_response, "Python MCP server tools/list failed"
             
     except Exception as e:
         print(f"❌ Python MCP server test failed: {e}")
-        return False
+        assert False, f"Python MCP server test failed: {e}"
 
 def test_npm_installation():
     """Test NPM wrapper"""
@@ -100,39 +100,40 @@ def test_npm_installation():
     code, stdout, stderr = run_command(["node", "--version"])
     if code != 0:
         print("❌ Node.js not found, skipping NPM test")
-        return False
+        assert code == 0, "Node.js not found, skipping NPM test"
     
-    print(f"✅ Node.js found: {stdout.strip()}")    # Test NPM wrapper (it works correctly, but stdio='inherit' means we can't capture output)
+    print(f"✅ Node.js found: {stdout.strip()}")
+    
+    # Test NPM wrapper (it works correctly, but stdio='inherit' means we can't capture output)
     # Instead, test that it launches without error and find python
     print("✅ Node.js wrapper launches successfully (verified via debug test)")
     print("✅ NPM wrapper working")
-    return True
 
 def test_docker_installation():
     """Test Docker installation"""
     print("🔍 Testing Docker installation...")
-    
-    # Check if docker is available
+      # Check if docker is available
     code, stdout, stderr = run_command(["docker", "--version"])
     if code != 0:
         print("❌ Docker not found, skipping Docker test")
-        return False
+        assert code == 0, "Docker not found, skipping Docker test"
     
     print(f"✅ Docker found: {stdout.strip()}")
-      # Build Docker image
+    
+    # Build Docker image
     print("📦 Building Docker image...")
     code, stdout, stderr = run_command(["docker", "build", "-t", "dev-env-copilot-test", "."], timeout=60)
     if code != 0:
         if "cannot connect" in stderr.lower() or "pipe" in stderr.lower():
             print("❌ Docker Desktop not running - skipping Docker container test")
             print("   (To test Docker: start Docker Desktop and run test again)")
-            return False
         else:
             print(f"❌ Docker build failed: {stderr}")
-            return False
+        assert code == 0, f"Docker build failed or Docker Desktop not running: {stderr}"
     
     print("✅ Docker image built successfully")
-      # Test Docker container with proper MCP handshake
+    
+    # Test Docker container with proper MCP handshake
     try:
         proc = subprocess.Popen(
             ["docker", "run", "-i", "--rm", "dev-env-copilot-test"],
@@ -156,13 +157,12 @@ def test_docker_installation():
         }
         proc.stdin.write(json.dumps(init_request) + "\n")
         proc.stdin.flush()
-        
-        # Read response
+          # Read response
         response = proc.stdout.readline()
         if not response or "result" not in json.loads(response):
             proc.terminate()
             print("❌ Docker container initialization failed")
-            return False
+        assert response and "result" in json.loads(response), "Docker container initialization failed"
         
         # Send initialized notification
         proc.stdin.write('{"jsonrpc": "2.0", "method": "notifications/initialized"}\n')
@@ -177,14 +177,13 @@ def test_docker_installation():
         
         if tools_response and "tools" in tools_response:
             print("✅ Docker container working")
-            return True
         else:
             print("❌ Docker container tools/list failed")
-            return False
+        assert tools_response and "tools" in tools_response, "Docker container tools/list failed"
             
     except Exception as e:
         print(f"❌ Docker container test failed: {e}")
-        return False
+        assert False, f"Docker container test failed: {e}"
 
 def test_mcp_functionality():
     """Test MCP server functionality with proper handshake"""
@@ -193,7 +192,7 @@ def test_mcp_functionality():
     try:
         # Start MCP server
         proc = subprocess.Popen(
-            [sys.executable, "-m", "dev_environment_mcp.mcp_server"],
+            [sys.executable, "-m", "dev_environment_mcp"],
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
@@ -220,7 +219,7 @@ def test_mcp_functionality():
         if not response or "result" not in json.loads(response):
             proc.terminate()
             print("❌ MCP initialization failed")
-            return False
+        assert response and "result" in json.loads(response), "MCP initialization failed"
         
         # Send initialized notification
         proc.stdin.write('{"jsonrpc": "2.0", "method": "notifications/initialized"}\n')
@@ -263,11 +262,11 @@ def test_mcp_functionality():
         
         proc.terminate()
         
-        return success_count == 2
+        assert success_count == 2, f"MCP functionality test failed: {success_count}/2 tests passed"
         
     except Exception as e:
         print(f"❌ MCP functionality test failed: {e}")
-        return False
+        assert False, f"MCP functionality test failed: {e}"
 
 def main():
     """Run all tests"""
@@ -285,7 +284,15 @@ def main():
     for test_name, test_func in tests:
         print(f"\n📋 {test_name}")
         print("-" * 30)
-        results[test_name] = test_func()
+        try:
+            test_func()
+            results[test_name] = True
+        except AssertionError as e:
+            print(f"❌ Test failed: {e}")
+            results[test_name] = False
+        except Exception as e:
+            print(f"❌ Test error: {e}")
+            results[test_name] = False
     
     print("\n" + "=" * 50)
     print("📊 Test Summary")

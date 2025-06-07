@@ -15,8 +15,7 @@ def test_docker_mcp_integration():
     
     # Get current directory (Windows-compatible)
     current_dir = os.getcwd().replace('\\', '/')
-    
-    # Test 1: Check Docker image exists
+      # Test 1: Check Docker image exists
     print("\n1. Checking Docker image...")
     try:
         result = subprocess.run(
@@ -29,10 +28,10 @@ def test_docker_mcp_integration():
             print("✅ Docker image 'dev-env-copilot-test' found")
         else:
             print("❌ Docker image not found")
-            return False
+        assert "dev-env-copilot-test" in result.stdout, "Docker image not found"
     except subprocess.CalledProcessError as e:
         print(f"❌ Docker command failed: {e}")
-        return False
+        assert False, f"Docker command failed: {e}"
     
     # Test 2: Test MCP protocol handshake
     print("\n2. Testing MCP protocol handshake...")
@@ -56,8 +55,7 @@ def test_docker_mcp_integration():
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
-            text=True
-        )
+            text=True        )
         
         stdout, stderr = process.communicate(input=json.dumps(init_msg) + '\n', timeout=10)
         
@@ -67,15 +65,15 @@ def test_docker_mcp_integration():
             print(f"❌ MCP handshake failed")
             print(f"   Stdout: {stdout}")
             print(f"   Stderr: {stderr}")
-            return False
+        assert '"result"' in stdout and '"protocolVersion"' in stdout, f"MCP handshake failed. Stdout: {stdout}, Stderr: {stderr}"
             
     except subprocess.TimeoutExpired:
         print("❌ MCP handshake timed out")
         process.kill()
-        return False
+        assert False, "MCP handshake timed out"
     except Exception as e:
         print(f"❌ MCP handshake error: {e}")
-        return False
+        assert False, f"MCP handshake error: {e}"
     
     # Test 3: Test tools list (simpler approach)
     print("\n3. Testing tools list...")
@@ -153,17 +151,13 @@ print(json.dumps(tools_list))
                     }
                 }
             }
-        }
-    }
+        }    }
     
     print(json.dumps(config, indent=2))
     
     print("\n🔧 Quick Test Commands:")
     print(f"Test handshake:")
     print(f'echo \'{{"jsonrpc":"2.0","id":1,"method":"initialize","params":{{"protocolVersion":"2024-11-05","capabilities":{{"tools":{{}}}},"clientInfo":{{"name":"test","version":"1.0"}}}}}}\' | docker run --rm -i --volume "{current_dir}:/workspace:ro" dev-env-copilot-test:latest')
-    
-    return True
 
 if __name__ == "__main__":
-    success = test_docker_mcp_integration()
-    sys.exit(0 if success else 1)
+    test_docker_mcp_integration()

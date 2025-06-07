@@ -45,7 +45,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
     CMD python -c "import dev_environment_mcp; print('OK')" || exit 1
 
 # Default command - run the MCP server
-CMD ["python", "-m", "dev_environment_mcp.mcp_server"]
+CMD ["python", "-m", "dev_environment_mcp"]
 
 # Expose no ports (MCP server uses stdio)
 # Volume for configuration (optional)
